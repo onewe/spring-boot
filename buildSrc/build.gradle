@@ -5,9 +5,11 @@ plugins {
 }
 
 repositories {
+	maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+	maven{ url 'https://maven.aliyun.com/repository/gradle-plugin/'}
+	maven{ url 'https://maven.aliyun.com/repository/spring'}
 	mavenCentral()
 	gradlePluginPortal()
-	maven { url "https://repo.spring.io/release" }
 }
 
 sourceCompatibility = 1.8
