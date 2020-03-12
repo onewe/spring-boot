@@ -72,9 +72,12 @@ public class ApplicationConversionService extends FormattingConversionService {
 	 * {@code null})
 	 */
 	public static ConversionService getSharedInstance() {
+		// 单利模式
 		ApplicationConversionService sharedInstance = ApplicationConversionService.sharedInstance;
 		if (sharedInstance == null) {
+			// 加锁
 			synchronized (ApplicationConversionService.class) {
+				// 双重检查
 				sharedInstance = ApplicationConversionService.sharedInstance;
 				if (sharedInstance == null) {
 					sharedInstance = new ApplicationConversionService();

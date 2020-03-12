@@ -49,6 +49,7 @@ class TomcatStarter implements ServletContainerInitializer {
 	@Override
 	public void onStartup(Set<Class<?>> classes, ServletContext servletContext) throws ServletException {
 		try {
+			// 初始化所有需要 初始化的类
 			for (ServletContextInitializer initializer : this.initializers) {
 				initializer.onStartup(servletContext);
 			}

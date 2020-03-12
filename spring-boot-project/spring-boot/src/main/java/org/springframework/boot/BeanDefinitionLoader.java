@@ -125,6 +125,7 @@ class BeanDefinitionLoader {
 	int load() {
 		int count = 0;
 		for (Object source : this.sources) {
+			// 加载资源
 			count += load(source);
 		}
 		return count;
@@ -153,7 +154,9 @@ class BeanDefinitionLoader {
 			GroovyBeanDefinitionSource loader = BeanUtils.instantiateClass(source, GroovyBeanDefinitionSource.class);
 			load(loader);
 		}
+		// 判断是否有 @Component 注解
 		if (isComponent(source)) {
+			// 注册
 			this.annotatedReader.register(source);
 			return 1;
 		}
@@ -168,20 +171,25 @@ class BeanDefinitionLoader {
 	}
 
 	private int load(Resource source) {
+		// 判断是否是 groovy
 		if (source.getFilename().endsWith(".groovy")) {
 			if (this.groovyReader == null) {
 				throw new BeanDefinitionStoreException("Cannot load Groovy beans without Groovy on classpath");
 			}
+			// 使用 groovyReader 进行加载
 			return this.groovyReader.loadBeanDefinitions(source);
 		}
+		// 使用 XmlBeanDefinitionReader 加载 xml
 		return this.xmlReader.loadBeanDefinitions(source);
 	}
 
 	private int load(Package source) {
+		// 采用注解扫描 扫它
 		return this.scanner.scan(source.getName());
 	}
 
 	private int load(CharSequence source) {
+		// 尝试使用 类 进行加载
 		String resolvedSource = this.xmlReader.getEnvironment().resolvePlaceholders(source.toString());
 		// Attempt as a Class
 		try {
@@ -190,6 +198,7 @@ class BeanDefinitionLoader {
 		catch (IllegalArgumentException | ClassNotFoundException ex) {
 			// swallow exception and continue
 		}
+		// 尝试使用 作为资源进行加载
 		// Attempt as resources
 		Resource[] resources = findResources(resolvedSource);
 		int loadCount = 0;
@@ -203,6 +212,7 @@ class BeanDefinitionLoader {
 		if (atLeastOneResourceExists) {
 			return loadCount;
 		}
+		// 尝试使用 作为包名进行加载
 		// Attempt as package
 		Package packageResource = findPackage(resolvedSource);
 		if (packageResource != null) {

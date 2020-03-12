@@ -47,6 +47,9 @@ import org.springframework.data.repository.Repository;
  * @author Stephane Nicoll
  * @author Andy Wilkinson
  * @since 1.2.0
+ *
+ * 开启自动配置 EnableAutoConfiguration
+ * 开启注解扫描 ComponentScan
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
